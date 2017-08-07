@@ -27,6 +27,44 @@
             <kind>1</kind>
             <string>depth = -101;
 image_index = 0;
+instance_create(x, y - 110, obj_pauseTitle);
+instance_create(x, y + 10, obj_pauseResume);
+instance_create(x - 5, y + 140, obj_sfxBar);
+instance_create(x - 5, y + 190, obj_musicBar);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="1" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>with(obj_pauseTitle) {
+    instance_destroy();
+}
+with(obj_pauseResume) {
+    instance_destroy();
+}
+with(obj_sfxBar) {
+    instance_destroy();
+}
+with(obj_musicBar) {
+    instance_destroy();
+}
 </string>
           </argument>
         </arguments>
@@ -49,7 +87,7 @@ image_index = 0;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if(mouse_x &gt; x - 86 &amp;&amp; mouse_x &lt; x + 74 &amp;&amp; mouse_y &gt; y - 68 &amp;&amp; mouse_y &lt; y + 6) {
+            <string>/*if(mouse_x &gt; x - 86 &amp;&amp; mouse_x &lt; x + 74 &amp;&amp; mouse_y &gt; y - 68 &amp;&amp; mouse_y &lt; y + 6) {
     image_index = 1;
     if(mouse_check_button(mb_left)) {
         global.paused = false;
@@ -67,7 +105,7 @@ else if(mouse_x &gt; x - 86 &amp;&amp; mouse_x &lt; x + 74 &amp;&amp; mouse_y &g
 }
 else {
     image_index = 0;
-}
+}*/
 </string>
           </argument>
         </arguments>

@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>image_speed = .7 / 2;
 audio_play_sound(snd_rain, 15, false);
-audio_sound_gain(snd_rain, .5, 0);
+audio_sound_gain(snd_rain, .5 * global.sfxVolume, 0);
 paused = false;
 </string>
           </argument>
@@ -89,7 +89,7 @@ for(i = 16; i &lt; 1040; i += 16) {
             inst.raining = true;
             break;
         }
-        if(position_meeting(i, j, obj_player)) {
+        if(position_meeting(i, j, obj_player) &amp;&amp; !global.raincoat) {
             takeDamage(1)
             //player = instance_position(i, j, obj_player);
             //player.alarm[1] = 1;

@@ -335,6 +335,120 @@ instance_create((16 * 32) + 16, 736 - ((height * 32) - 16), obj_titleBuildingBlo
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>///Execute phases
+key_jump = 0
+if(phase1) {
+    if(x != room_width / 2) {
+        key_right = true;
+    }
+    else {
+        key_right = false;
+        phase1 = false;
+        phase2 = true;
+    }
+}
+
+else if(phase2) {
+    if(height &lt; startHeight &amp;&amp; place_meeting(x, y + 1, par_walkable)) {
+        key_jump = 1;
+        height++;
+        alarm[0] = .25 * room_speed;
+    }
+    if(height == startHeight) {
+        phase2 = false;
+        phase3 = true;
+    }
+    
+}
+
+else if(phase3) {
+    if(place_meeting(x, y + 1, par_walkable) &amp;&amp; height &gt; 0) {
+        if(global.arr[height, xPos] == -1) {
+            xPos = 0;
+            alarm[1] = 1;
+        }
+        else if(!alarm2) {
+            alarm[2] = .25 * room_speed;
+            alarm2 = true;
+        }
+    }
+    else if(height == 0) {
+        phase3 = false;
+        phase4 = true;
+    }
+}
+
+else if(phase4) {
+    if(place_meeting(x, y + 1, obj_titleWall) &amp;&amp; !alarm3) {
+        alarm[3] = room_speed;
+        alarm3 = true;
+    }
+    if(obj_titlePlayer.x &gt; room_width + 16) {
+        num = irandom_range(1, 4);
+        //Direction Bombs
+        if(num == 1) {
+            if(global.titlePlayerCount == 1) {
+                with(obj_titleHandler) {
+                    bombStartHeight = 18;
+                    bombEndHeight = 6;
+                    alarm[0] = 5 * room_speed;
+                }
+            }
+            else if(global.titlePlayerCount == 2) {
+                with(obj_titleHandler) {
+                    bombStartHeight = 19;
+                    bombEndHeight = 6;
+                    alarm[0] = 5 * room_speed;
+                }
+            }
+            else if(global.titlePlayerCount == 3) {
+                with(obj_titleHandler) {
+                    bombStartHeight = 19;
+                    bombEndHeight = 3;
+                    alarm[0] = 5 * room_speed;
+                }
+            }
+        }
+        
+        //Rain
+        else if(num == 2) {
+            instance_create(512, 32, obj_titleClouds);
+        }
+        
+        //Earthquake
+        else if(num == 3) {
+            instance_create(0, 0, obj_titleEarthquake);
+        }
+        else if(num == 4) {
+            instance_create(512, 32, obj_titleThunderClouds);
+        }
+        with(obj_titlePlayer) {
+            instance_destroy();
+        }
+    }
+}
+
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>///Basic Player Movement
 //Get the player's movement input
 if(!global.paused) {
@@ -404,28 +518,62 @@ if(!global.paused) {
 
 //Standing still
 if(move == 0 &amp;&amp; vsp == 0) {
-    if(image_index &lt; 16 || image_index &gt;= 20) {
+    if(global.retro) {
+        sprite_index = spr_playerIdle;
+        image_speed = .2 / 2;
+    }
+    else {
+        sprite_index = spr_updatedPlayerIdle;
+        image_speed = .3 / 2;
+    }
+    /*if(image_index &lt; 16 || image_index &gt;= 20) {
         image_index = 16;
     }
-    image_speed= .2 / 2;
+    image_speed= .2 / 2;*/
 }
 //Moving right
 else if(move &gt; 0 &amp;&amp; vsp == 0) {
-    if(image_index &lt; 8 || image_index &gt;= 15) {
+    image_xscale = 1;
+    if(global.retro) {
+        sprite_index = spr_playerRun;
+        image_speed = .2 / 2;
+    }
+    else {
+        sprite_index = spr_updatedPlayerRun;
+        image_speed = .3 / 2;
+    }
+    /*if(image_index &lt; 8 || image_index &gt;= 15) {
         image_index = 8;
     }
-    image_speed = .2 / 2;
+    image_speed = .2 / 2;*/
 }
 //Moving left
 else if(move &lt; 0 &amp;&amp; vsp == 0) {
-    if(image_index &gt;= 7 || image_index &gt; 15) {
+    image_xscale = -1;
+    if(global.retro) {
+        sprite_index = spr_playerRun;
+        image_speed = .2 / 2;
+    }
+    else {
+        sprite_index = spr_updatedPlayerRun;
+        image_speed = .3 / 2;
+    }
+    /*if(image_index &gt;= 7 || image_index &gt; 15) {
         image_index = 0;
     }
-    image_speed = .2 / 2;
+    image_speed = .2 / 2;*/
 }
 //Falling
 else if(vsp != 0) {
-    image_index = 26;
+    if(global.retro) {
+        sprite_index = spr_playerJump;
+        image_speed = .2 / 2;
+    }
+    else {
+        sprite_index = spr_updatedPlayerJump;
+        image_speed = .2 / 2;
+    }
+    //image_index = 26;
 }
 
 }
@@ -435,138 +583,6 @@ else {
     image_speed = 0;
 }
 </string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Execute phases
-key_jump = 0
-if(phase1) {
-    if(x != room_width / 2) {
-        key_right = true;
-    }
-    else {
-        key_right = false;
-        phase1 = false;
-        phase2 = true;
-    }
-}
-
-else if(phase2) {
-    if(height &lt; startHeight &amp;&amp; place_meeting(x, y + 1, par_walkable)) {
-        key_jump = 1;
-        height++;
-        alarm[0] = .25 * room_speed;
-    }
-    if(height == startHeight) {
-        phase2 = false;
-        phase3 = true;
-    }
-    
-}
-
-else if(phase3) {
-    if(place_meeting(x, y + 1, par_walkable) &amp;&amp; height &gt; 0) {
-        if(global.arr[height, xPos] == -1) {
-            xPos = 0;
-            alarm[1] = 1;
-        }
-        else if(!alarm2) {
-            alarm[2] = .25 * room_speed;
-            alarm2 = true;
-        }
-    }
-    else if(height == 0) {
-        phase3 = false;
-        phase4 = true;
-    }
-}
-
-else if(phase4) {
-    if(place_meeting(x, y + 1, obj_titleWall) &amp;&amp; !alarm3) {
-        alarm[3] = room_speed;
-        alarm3 = true;
-    }
-    if(obj_titlePlayer.x &gt; room_width + 16) {
-        num = irandom_range(1, 3);
-        //Direction Bombs
-        if(num == 1) {
-            if(global.titlePlayerCount == 1) {
-                with(obj_titleHandler) {
-                    bombStartHeight = 18;
-                    bombEndHeight = 6;
-                    alarm[0] = 5 * room_speed;
-                }
-            }
-            else if(global.titlePlayerCount == 2) {
-                with(obj_titleHandler) {
-                    bombStartHeight = 19;
-                    bombEndHeight = 6;
-                    alarm[0] = 5 * room_speed;
-                }
-            }
-            else if(global.titlePlayerCount == 3) {
-                with(obj_titleHandler) {
-                    bombStartHeight = 19;
-                    bombEndHeight = 3;
-                    alarm[0] = 5 * room_speed;
-                }
-            }
-        }
-        
-        //Rain
-        else if(num == 2) {
-            instance_create(512, 32, obj_titleClouds);
-        }
-        
-        //Earthquake
-        else if(num == 3) {
-            instance_create(0, 0, obj_titleEarthquake);
-        }
-        
-        with(obj_titlePlayer) {
-            instance_destroy();
-        }
-    }
-}
-
-
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string></string>
           </argument>
         </arguments>
       </action>

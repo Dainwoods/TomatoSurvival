@@ -76,6 +76,7 @@ alarmActivated = false;
     image_speed = .5;
     global.hasKey = false;
     audio_play_sound(snd_chestOpen, 10, false);
+    audio_sound_gain(snd_chestOpen, global.sfxVolume, 0);
 }
 if(image_index &gt;= 6) {
     image_speed = 0;

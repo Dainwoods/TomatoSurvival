@@ -47,9 +47,9 @@
           <argument>
             <kind>1</kind>
             <string>///Music
-audio_stop_all();
+/*audio_stop_all();
 audio_play_sound(snd_howTo, 10, true);
-audio_sound_gain(snd_howTo, .4, 0);
+audio_sound_gain(snd_howTo, .4, 0);*/
 
 
 </string>

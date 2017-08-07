@@ -18,6 +18,7 @@
       <sound>sound\snd_lava</sound>
       <sound>sound\snd_keyCollect</sound>
       <sound>sound\snd_chestOpen</sound>
+      <sound>sound\snd_thunder</sound>
     </sounds>
     <sounds name="Music">
       <sound>sound\snd_play</sound>
@@ -27,19 +28,29 @@
     </sounds>
   </sounds>
   <sprites name="sprites">
-    <sprite>sprites\spr_player</sprite>
+    <sprites name="Player Sprites">
+      <sprite>sprites\spr_player</sprite>
+      <sprite>sprites\spr_playerRun</sprite>
+      <sprite>sprites\spr_playerIdle</sprite>
+      <sprite>sprites\spr_playerJump</sprite>
+      <sprite>sprites\spr_updatedPlayerRun</sprite>
+      <sprite>sprites\spr_updatedPlayerIdle</sprite>
+      <sprite>sprites\spr_updatedPlayerJump</sprite>
+    </sprites>
     <sprites name="Blocks">
       <sprites name="Building Blocks">
         <sprite>sprites\spr_buildingBlock</sprite>
         <sprite>sprites\spr_preBuilding</sprite>
         <sprite>sprites\spr_preDestroy</sprite>
         <sprite>sprites\spr_placeHolder</sprite>
+        <sprite>sprites\spr_updatedBuildingBlock1</sprite>
+        <sprite>sprites\spr_updatedBuildingBlock2</sprite>
+        <sprite>sprites\spr_updatedBuildingBlock3</sprite>
       </sprites>
       <sprite>sprites\spr_wall</sprite>
+      <sprite>sprites\spr_updatedWall</sprite>
     </sprites>
     <sprite>sprites\spr_pointBlock</sprite>
-    <sprite>sprites\spr_health</sprite>
-    <sprite>sprites\spr_gg</sprite>
     <sprites name="Events">
       <sprites name="Rain">
         <sprite>sprites\spr_clouds</sprite>
@@ -82,12 +93,22 @@
       </sprites>
       <sprite>sprites\spr_forecast</sprite>
       <sprite>sprites\spr_ghost</sprite>
+      <sprite>sprites\spr_updatedGhost</sprite>
+      <sprite>sprites\spr_updatedGhostDisappear</sprite>
     </sprites>
-    <sprite>sprites\spr_play</sprite>
-    <sprite>sprites\spr_pauseFade</sprite>
-    <sprite>sprites\spr_pauseMenu</sprite>
-    <sprite>sprites\sprite37</sprite>
-    <sprite>sprites\spr_logo</sprite>
+    <sprites name="UI Sprites">
+      <sprite>sprites\spr_musicBar</sprite>
+      <sprite>sprites\spr_health</sprite>
+      <sprite>sprites\spr_pauseFade</sprite>
+      <sprite>sprites\spr_play</sprite>
+      <sprite>sprites\spr_gg</sprite>
+      <sprite>sprites\spr_pauseMenu</sprite>
+      <sprite>sprites\spr_logo</sprite>
+      <sprite>sprites\spr_pauseResume</sprite>
+      <sprite>sprites\spr_pauseTitle</sprite>
+      <sprite>sprites\spr_sfxBar</sprite>
+      <sprite>sprites\spr_retroButton</sprite>
+    </sprites>
   </sprites>
   <backgrounds name="background">
     <background>background\bg_gameOver</background>
@@ -118,7 +139,6 @@
       <script>scripts\buildArr.gml</script>
     </scripts>
   </scripts>
-  <shaders name="shaders"/>
   <fonts name="fonts">
     <font>fonts\f_score</font>
   </fonts>
@@ -134,10 +154,12 @@
       <object>objects\obj_title1WayLeft</object>
       <object>objects\obj_title1WayRight</object>
       <object>objects\obj_titleClouds</object>
+      <object>objects\obj_titleThunderClouds</object>
       <object>objects\obj_titleRain</object>
       <object>objects\obj_play</object>
       <object>objects\obj_title</object>
       <object>objects\obj_howTo</object>
+      <object>objects\obj_retroButton</object>
     </objects>
     <objects name="Gameplay">
       <object>objects\obj_player</object>
@@ -216,12 +238,17 @@
       <object>objects\obj_drawHandlerEvent</object>
       <object>objects\obj_forecast</object>
       <object>objects\obj_highscoreHandler</object>
+      <object>objects\obj_sfxBar</object>
+      <object>objects\obj_musicBar</object>
+      <object>objects\obj_pauseResume</object>
+      <object>objects\obj_pauseTitle</object>
     </objects>
     <object>objects\obj_pauseFade</object>
     <object>objects\obj_pauseMenu</object>
     <object>objects\obj_fullScreen</object>
     <object>objects\obj_saver</object>
     <object>objects\obj_logo</object>
+    <object>objects\obj_musicHandler</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\room_logo</room>

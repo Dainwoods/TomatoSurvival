@@ -30,6 +30,12 @@ global.damagePlayerWait = 0;
 damageBlockWait = 0;
 alarm3 = true;
 alarm0 = false;
+if(global.retro) {  
+    sprite_index = spr_wall;
+}
+else {
+    sprite_index = spr_updatedWall;
+}
 </string>
           </argument>
         </arguments>
@@ -81,6 +87,7 @@ if(audio_is_playing(snd_lava)) {
     audio_stop_sound(snd_lava);
 }
 audio_play_sound(snd_lava, 12, true);
+audio_sound_gain(snd_lava, global.sfxVolume, 0);
 if(global.doubleEffect) {
     alarm[0] = 2 * room_speed * LAVA_DURATION;
 }

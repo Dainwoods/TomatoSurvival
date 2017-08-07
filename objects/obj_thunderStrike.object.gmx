@@ -36,6 +36,8 @@ alarm[0] = .5 * room_speed;
 if(global.paused) {
     alarm[0]++;
 }
+
+
 </string>
           </argument>
         </arguments>
@@ -81,17 +83,40 @@ if(global.paused) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if(startX != 0) {
+            <string>if(!global.paused) {
+
+if(startX != 0) {
     x = (startX + endX) / 2;
     y = (startY + endY) / 2;
-    rotation = ((endX - startX) / 32) * 45;
+    var difX = endX - startX;
+    var difY = endY - startY;
+    var totDif = sqrt( (difX * difX) + (difY * difY) );
+    var angle = darctan(difX / difY);
+    image_angle = angle;
+    image_yscale = totDif / 2;
+    /*rotation = ((endX - startX) / 32) * 45;
     if(rotation == 0) {
         image_yscale = 32 / 2;
     }
     else {
         image_yscale = 45.2548339959 / 2;
     }
-    image_angle = rotation;
+    image_angle = rotation;*/
+}
+if(place_meeting(x, y, obj_player)) {
+    takeDamage(4);
+}
+if(place_meeting(x, y, obj_buildingBlock)) {
+    with(instance_place(x, y, obj_buildingBlock)) {
+        instance_destroy();
+    }
+}
+if(place_meeting(x, y, obj_titleBuildingBlock)) {
+    with(instance_place(x, y, obj_titleBuildingBlock)) {
+        instance_destroy();
+    }
+}
+
 }
 </string>
           </argument>
@@ -113,9 +138,33 @@ if(global.paused) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if(place_meeting(x, y, obj_player)) {
-    takeDamage(4);
+            <string>if(global.paused) {
+    alarm[0]++;
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>draw_circle_color(endX, endY, 8, c_yellow, c_yellow, 0);
+draw_self();
 </string>
           </argument>
         </arguments>

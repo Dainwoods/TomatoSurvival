@@ -29,6 +29,7 @@
 breakCount = 0;
 alarm[0] = (room_speed * EARTHQUAKE_DURATION) / 2;
 audio_play_sound(snd_earthquake, 21, true);
+audio_sound_gain(snd_earthquake, global.sfxVolume, 0);
 
 </string>
           </argument>

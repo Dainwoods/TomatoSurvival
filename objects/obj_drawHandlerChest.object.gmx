@@ -49,6 +49,8 @@ global.drawChestText15 = false;
 global.drawChestText16 = false;
 global.drawChestText17 = false;
 global.drawChestText18 = false;
+global.drawChestText19 = false;
+
 </string>
           </argument>
         </arguments>
@@ -168,7 +170,7 @@ else if(global.drawChestText12) {
 }
 else if(global.drawChestText13) {
     if(global.invincible) {
-        text = "Can't touch this";
+        text = "You feel a rush of energy";
     }
     else {
         text = "You now feel vulnerable again";
@@ -202,16 +204,25 @@ else if(global.drawChestText17) {
     global.drawChestText17 = false;
 }
 else if(global.drawChestText18) {
-    if(global.rainCoat) {
+    if(!global.raincoat) {
         text = "Your fear has returned";
     }
     else {
         text = "You no longer fear the rain";
     }
     showText = true;
-    global.drawChestText7 = false;
+    global.drawChestText18 = false;
 }
-
+else if(global.drawChestText19) {
+    if(global.visibleBlocks) {
+        text = "Your sight has been returned";
+    }
+    else {
+        text = "Your sight has been revoked";
+    }
+    showText = true;
+    global.drawChestText19 = false;
+}
 
 
 width = (string_width(text) / 2) * xScale;

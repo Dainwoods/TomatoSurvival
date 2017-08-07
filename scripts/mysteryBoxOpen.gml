@@ -170,7 +170,17 @@ while(!eventTriggered) {
         eventTriggered = true;
         global.drawChestText16 = true;
     }
-    
+    else if(num <= 105) { //raincoat
+        global.raincoat = !global.raincoat;
+        eventTriggered = true;
+        global.drawChestText18 = true;
+    }
+    else if(num <= 106) {
+        global.visibleBlocks = false;
+        obj_player.alarm[8] = 30 * room_speed;
+        eventTriggered = true;
+        global.drawChestText19 = true;
+    }
     
     num = random_range(0, 100);
 }

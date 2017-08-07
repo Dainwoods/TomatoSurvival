@@ -26,6 +26,9 @@
           <argument>
             <kind>1</kind>
             <string>text = "";
+if(global.scr &gt; global.highscore) {
+    global.highscore = global.scr;
+}
 playerScore = "Your score: " + string(global.scr);
 highscore = "Highscore:  " + string(global.highscore);
 </string>

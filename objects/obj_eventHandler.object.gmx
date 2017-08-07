@@ -34,6 +34,7 @@ alarm2_3 = true;
 str = "Hi Alec";
 width = 2;
 alarm[1] = 1;
+eventIndex = 0;
 </string>
           </argument>
         </arguments>
@@ -105,7 +106,7 @@ else if(number == 0) {
 alarm1 = true;
 eventTriggered = false;
 
-odds = irandom_range(9, TOTAL_EVENTS + 1);//The plus 1 is for the extra odds of a mystery box
+odds = irandom_range(1, TOTAL_EVENTS + 1);//The plus 1 is for the extra odds of a mystery box
 while(!eventTriggered) {
     //Spawns rain
     if(odds == 1) {
@@ -151,7 +152,9 @@ while(!eventTriggered) {
     }
 }
 global.forecastNumber = odds;
-alarm[0] = 15 * room_speed;
+var time = (15 * room_speed) - (10 * eventIndex);
+alarm[0] = max(time, 3 * room_speed);
+eventIndex++;
 </string>
           </argument>
         </arguments>
@@ -174,7 +177,8 @@ alarm[0] = 15 * room_speed;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if(odds == 1) {
+            <string>
+if(odds == 1) {
     rain();
     global.drawEventText1 = true;
 }
@@ -212,6 +216,7 @@ else if(odds == 10) {
     instance_create(0, 0, obj_ghost);
     global.drawEventText9 = true;
 }
+alarm[1] = 1;
 </string>
           </argument>
         </arguments>
@@ -265,10 +270,11 @@ if(!instance_exists(obj_pointBlock)) {
           <argument>
             <kind>1</kind>
             <string>///After 15 seconds, will trigger some kind of event every 30 seconds.
-if(alarm1) {
+/*if(alarm1) {
     alarm1 = false;
+    var time = (15 * room_speed)
     alarm[1] = 15 * room_speed;
-}
+}*/
 
 if(global.paused) {
     if(alarm[0] &gt; 0) {

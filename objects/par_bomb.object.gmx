@@ -27,6 +27,7 @@
             <kind>1</kind>
             <string>if(image_index &gt;= image_number - 1) {
     audio_play_sound(snd_explosion, 13, false);
+    audio_sound_gain(snd_explosion, global.sfxVolume, 0);
 }
 </string>
           </argument>

@@ -26,6 +26,23 @@
           <argument>
             <kind>1</kind>
             <string>///Initializes variables
+index = obj_player.nextIndex;
+if(global.retro) {
+    sprite_index = spr_buildingBlock;
+}
+else {
+    switch(index) {
+        case 1:
+            sprite_index = spr_updatedBuildingBlock1;
+            break;
+        case 2:
+            sprite_index = spr_updatedBuildingBlock2;
+            break;
+        case 3:
+            sprite_index = spr_updatedBuildingBlock3;
+            break;
+    }
+}
 image_speed = 0;
 hp = 3;
 tookRainDamage = false;
@@ -155,6 +172,67 @@ if(!tookRainDamage) {
     hp--;
     alarm[1] = room_speed; //Destroys slightly over 3 blocks in each column
     tookRainDamage = true;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if(!global.visibleBlocks) {
+    visible = false;
+}
+else {
+    visible = true;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if(!global.retro &amp;&amp; index != undefined) {
+    switch(index) {
+        case 1:
+            sprite_index = spr_updatedBuildingBlock1;
+            break;
+        case 2:
+            sprite_index = spr_updatedBuildingBlock2;
+            break;
+        case 3:
+            sprite_index = spr_updatedBuildingBlock3;
+            break;
+    }
 }
 </string>
           </argument>

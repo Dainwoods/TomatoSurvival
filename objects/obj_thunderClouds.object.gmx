@@ -28,12 +28,38 @@
             <string>image_speed = CLOUD_SPEED;
 if(global.doubleEffect) {
     alarm[0] = 10 * room_speed * 2;
+    alarm[2] = 18 * room_speed;
 }
 else {
     alarm[0] = 10 * room_speed; //10 = length of rain
+    alarm[2] = 8 * room_speed;
 }
+spawn = true;
 thundered = false;
 isRaining = false;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>spawn = false;
 </string>
           </argument>
         </arguments>
@@ -56,8 +82,10 @@ isRaining = false;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>thnder = instance_create(0, 0, obj_thunder);
-show_debug_message("thunder spawned");
+            <string>if(spawn) {
+    thnder = instance_create(0, 0, obj_thunder);
+    alarm[1] = random_range(1 * room_speed, 3 * room_speed);
+}
 </string>
           </argument>
         </arguments>
@@ -113,7 +141,7 @@ if(image_index == 17) {
     if(!isRaining) {
         background_index++;
         isRaining = true;
-        alarm[1] = random_range(1 * room_speed, 5 * room_speed);
+        alarm[1] = random_range(0 * room_speed, 2 * room_speed);
     }
 }
 else if(image_index == 34) {
@@ -127,6 +155,7 @@ else {
 else {
     alarm[0]++;
     alarm[1]++;
+    alarm[2]++;
     image_speed = 0;
 }
 </string>

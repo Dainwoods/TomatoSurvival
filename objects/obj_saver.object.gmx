@@ -32,13 +32,34 @@
     var loadMap = json_decode(loadJson);
     
     global.highscore = ds_map_find_value(loadMap, "highscore");
-
     global.alecDiscovered = ds_map_find_value(loadMap, "alecDiscovered");
+    global.sfxVolume = ds_map_find_value(loadMap, "sfxVolume");
+    global.musicVolume = ds_map_find_value(loadMap, "musicVolume");
+    global.retro = ds_map_find_value(loadMap, "retro");
 
 }
 else {
     global.highscore = 0;
     global.alecDiscovered = false;
+    global.sfxVolume = 1;
+    global.musicVolume = 1;
+    global.retro = true;
+}
+
+if(is_undefined(global.musicVolume)) {
+    global.musicVolume = 1;
+}
+if(is_undefined(global.sfxVolume)) {
+    global.sfxVolume = 1;
+}
+if(is_undefined(global.alecDiscovered)) {
+    global.alecDiscovered = false;
+}
+if(is_undefined(global.highscore)) {
+    global.highscore = 0;
+}
+if(is_undefined(global.retro)) {
+    global.retro = true;
 }
 </string>
           </argument>
@@ -69,6 +90,9 @@ var saveFile = file_text_open_write("Tomato.sav");
     var saveMap = ds_map_create();
         ds_map_add(saveMap, "highscore", global.highscore);
         ds_map_add(saveMap, "alecDiscovered", global.alecDiscovered);
+        ds_map_add(saveMap, "sfxVolume", global.sfxVolume);
+        ds_map_add(saveMap, "musicVolume", global.musicVolume);
+        ds_map_add(saveMap, "retro", global.retro);
         var saveJson = json_encode(saveMap);
     ds_map_destroy(saveMap);
     file_text_write_string(saveFile, saveJson);

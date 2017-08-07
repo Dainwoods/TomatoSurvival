@@ -27,7 +27,6 @@
             <kind>1</kind>
             <string>///Creates player variables
 int = 160 / 70 - ((160 / 70)mod(1));
-
 randomize();
 grav = .6 / 2;
 hsp = 0;
@@ -49,6 +48,15 @@ tookRainDamage = false;
 tookBombDamage1 = false; 
 //Took damage from a bomb that deals two heart of damage
 tookBombDamage2 = false;
+
+if(!global.retro) {
+    nextIndex = irandom_range(1, 3);
+}
+else {
+    nextIndex = 0;
+}
+
+
 </string>
           </argument>
         </arguments>
@@ -84,6 +92,8 @@ global.forecastNumber = 0;
 global.isEarthquake = false;
 global.canPlace = true;
 global.invincible = false; //player invincible
+global.raincoat = false;
+global.visibleBlocks = true;
 
 global.paused = false;
 </string>
@@ -107,9 +117,30 @@ global.paused = false;
           <argument>
             <kind>1</kind>
             <string>///Music
-audio_stop_all();
-audio_play_sound(snd_play, 10, true);
-audio_sound_gain(snd_play, .4, 0);
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="8">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>global.visibleBlocks = true;
 </string>
           </argument>
         </arguments>
@@ -332,15 +363,15 @@ if(!tookRainDamage) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/*while(place_meeting(x, y, par_walkable)) {
+            <string>while(place_meeting(x, y, par_walkable)) {
     var walk = instance_place(x, y, par_walkable);
     if(walk.y &gt; y) {
-        y++;
-    }
-    else {
         y--;
     }
-}*/
+    else {
+        y++;
+    }
+}
 </string>
           </argument>
         </arguments>
@@ -556,10 +587,14 @@ if(global.canPlace &amp;&amp; mouse_check_button(mb_right) &amp;&amp; mouse_y &g
                         if(!position_meeting(newXBlock, newYBlock, obj_pointBlock) &amp;&amp; !position_meeting(newXBlock, newYBlock, par_bomb) &amp;&amp; !position_meeting(newXBlock, newYBlock, obj_key) &amp;&amp; !position_meeting(newXBlock, newYBlock, obj_chest)) {
                             //checks that player is within 100 units of the new block
                             if(sqrt( sqr(newXBlock - obj_player.x) + sqr(newYBlock - obj_player.y) ) &lt; 100) {
-                                instance_create(newXBlock, newYBlock, obj_buildingBlock);
-                            
+                                var block = instance_create(newXBlock, newYBlock, obj_buildingBlock);
+                                if(!global.retro) {
+                                    block.index = nextIndex;
+                                    nextIndex = irandom_range(1, 3);
+                                }
                                 audio_emitter_pitch(audioEm, random_range(1.4, 1.8));
                                 audio_play_sound_on(audioEm, snd_buildBlock, false, 12);
+                                audio_sound_gain(snd_buildBlock, global.sfxVolume, 0);
                             
                             }
                         }
@@ -639,10 +674,12 @@ if(global.canPlace &amp;&amp; !mouse_check_button_pressed(mb_any) &amp;&amp; ins
                         if(!position_meeting(newXBlock, newYBlock, obj_pointBlock)) { 
                             //checks if distance from player to center of block is less than 100
                             if(sqrt( sqr(newXBlock - obj_player.x) + sqr(newYBlock - obj_player.y) ) &lt; 100 &amp;&amp; !global.isEarthquake) {
-                                instance_create(newXBlock, newYBlock, obj_preBuilding);
+                                var pre = instance_create(newXBlock, newYBlock, obj_preBuilding);
+                                pre.index = nextIndex;
                             }
                             else{
-                                instance_create(newXBlock, newYBlock, obj_placeHolder);
+                                var place = instance_create(newXBlock, newYBlock, obj_placeHolder);
+                                place.index = nextIndex;
                             }
                         }
                     }
@@ -685,12 +722,15 @@ if(!mouse_check_button_pressed(mb_any) &amp;&amp; instance_number(obj_preDestroy
         newXBlock = tempXBlock - (tempXBlock mod(32)) + 16;
         newYBlock = tempYBlock - (tempYBlock mod(32)) + 16;
         //checks if distance from player to center of block is less than 100.
+        var block = instance_position(mouse_x, mouse_y, obj_buildingBlock);
         if(sqrt( sqr(newXBlock - obj_player.x) + sqr(newYBlock - obj_player.y) ) &lt; 140) {
-            instance_create(newXBlock, newYBlock, obj_preDestroy);
+            var pre = instance_create(newXBlock, newYBlock, obj_preDestroy);
+            pre.index = block.index;
             obj_preDestroy.depth = -10;
         }
         else {
-            instance_create(newXBlock, newYBlock, obj_placeHolder);
+            var place = instance_create(newXBlock, newYBlock, obj_placeHolder);
+            place.index = block.index;
             obj_placeHolder.depth = -10;
         }
     }
@@ -725,42 +765,80 @@ if(!global.paused) {
 if(move == 0 &amp;&amp; vsp == 0) {
     audio_stop_sound(snd_walkGrass);
     audio_stop_sound(snd_walkBlock);
-    if(image_index &lt; 16 || image_index &gt;= 20) {
+    if(global.retro) {
+        sprite_index = spr_playerIdle;
+        image_speed = .2 / 2;
+    }
+    else {
+        sprite_index = spr_updatedPlayerIdle;
+        image_speed = .3 / 2;
+    }
+    /*if(image_index &lt; 16 || image_index &gt;= 20) {
         image_index = 16;
     }
-    image_speed= .2 / 2;
+    image_speed= .2 / 2;*/
 }
 //Moving right
 else if(move &gt; 0 &amp;&amp; vsp == 0) {
     if(place_meeting(x, y + 1, obj_wall) &amp;&amp; !audio_is_playing(snd_walkGrass)) {
         audio_play_sound(snd_walkGrass, 20, true);
+        audio_sound_gain(snd_walkGrass, global.sfxVolume, 0);
     }
     else if(!audio_is_playing(snd_walkBlock)){
         audio_play_sound(snd_walkBlock, 20, true);
+        audio_sound_gain(snd_walkBlock, global.sfxVolume, 0);
     }
-    if(image_index &lt; 8 || image_index &gt;= 15) {
+    image_xscale = 1;
+    if(global.retro) {
+        sprite_index = spr_playerRun;
+        image_speed = .2 / 2;
+    }
+    else {
+        sprite_index = spr_updatedPlayerRun;
+        image_speed = .3 / 2;
+    }
+    /*if(image_index &lt; 8 || image_index &gt;= 15) {
         image_index = 8;
     }
-    image_speed = .2 / 2;
+    image_speed = .2 / 2;*/
 }
 //Moving left
 else if(move &lt; 0 &amp;&amp; vsp == 0) {
     if(place_meeting(x, y + 1, obj_wall) &amp;&amp; !audio_is_playing(snd_walkGrass)) {
         audio_play_sound(snd_walkGrass, 20, true);
+        audio_sound_gain(snd_walkGrass, global.sfxVolume, 0);
     }
     else if(!audio_is_playing(snd_walkBlock)) {
         audio_play_sound(snd_walkBlock, 20, true);
+        audio_sound_gain(snd_walkBlock, global.sfxVolume, 0);
     }
-    if(image_index &gt;= 7 || image_index &gt; 15) {
+    image_xscale = -1;
+    if(global.retro) {
+        sprite_index = spr_playerRun;
+        image_speed = .2 / 2;
+    }
+    else {
+        sprite_index = spr_updatedPlayerRun;
+        image_speed = .3 / 2;
+    }
+    /*if(image_index &gt;= 7 || image_index &gt; 15) {
         image_index = 0;
     }
-    image_speed = .2 / 2;
+    image_speed = .2 / 2;*/
 }
 //Falling
 else if(vsp != 0) {
     audio_stop_sound(snd_walkGrass);
     audio_stop_sound(snd_walkBlock);
-    image_index = 26;
+    if(global.retro) {
+        sprite_index = spr_playerJump;
+        image_speed = .2 / 2;
+    }
+    else {
+        sprite_index = spr_updatedPlayerJump;
+        image_speed = .2 / 2;
+    }
+    //image_index = 26;
 }
 
 }
@@ -865,6 +943,7 @@ if(mouse_check_button(mb_left) &amp;&amp; !global.indestructible &amp;&amp; !mou
             <string>///Increases score and plays sound
 global.scr++;
 audio_play_sound(snd_coin, 10, false);
+audio_sound_gain(snd_coin, global.sfxVolume, 0);
 </string>
           </argument>
         </arguments>

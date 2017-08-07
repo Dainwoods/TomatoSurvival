@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>pointArr = undefined;
 currentIndex = 1;
-startX = irandom_range(0, room_width);
+startX = irandom_range(250, room_width - 250);
 startX = startX - (startX mod(32)) + 16;
 startY = 16;
 var vector;
@@ -71,18 +71,19 @@ alarm[0] = 1;
     currentIndex = 1;
     alarm[0] = 23 / (2 * room_speed);
 }*/
-if(currentIndex &lt; array_length_1d(pointArr)) {
+if(currentIndex &lt; 24) {
     var oldVector = pointArr[currentIndex - 1];
     startX = oldVector[0];
     startY = oldVector[1];
     var vector; 
-    endX = startX + choose(-32, 0, 32);
+    endX = startX + random_range(-100, 100);
+    endX = clamp(endX, 16, room_width - 16);
     endY = startY + 32;
     vector[0] = endX;
     vector[1] = endY;
     pointArr[currentIndex] = vector;
     currentIndex++;
-    alarm[0] = 23 / (2 * room_speed);
+    alarm[0] = 5; //was 10
     draw = true;
     /*var oldVector = pointArr[currentIndex - 1];
     var vector = pointArr[currentIndex];
@@ -96,7 +97,12 @@ if(currentIndex &lt; array_length_1d(pointArr)) {
     show_debug_message(string(endX) + ", " + string(endY));*/
 }
 else {
+    if(room == room_play) {
+        audio_play_sound(snd_thunder, 10, false);
+        audio_sound_gain(snd_thunder, .5 * global.sfxVolume, 0);
+    }
     lightningStrike(pointArr);
+    instance_destroy();
 }
 </string>
           </argument>
@@ -123,12 +129,18 @@ else {
             <string>if(global.paused) {
     alarm[0]++;
 }
+if(instance_exists(obj_thunderClouds) &amp;&amp; obj_thunderClouds.image_index != 17) {
+    instance_destroy();
+}
+if(instance_exists(obj_titleThunderClouds) &amp;&amp; obj_titleThunderClouds.image_index != 17) {
+    instance_destroy();
+}
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="8" enumb="0">
+    <event eventtype="8" enumb="64">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -145,7 +157,7 @@ else {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_line_width_color(startX, startY, endX, endY, 10, c_white, c_white);
+            <string>draw_line_width_color(startX, startY, endX, endY, 2, c_white, c_white);
 </string>
           </argument>
         </arguments>
