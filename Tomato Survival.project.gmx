@@ -56,6 +56,7 @@
         <sprite>sprites\spr_clouds</sprite>
         <sprite>sprites\spr_rain</sprite>
         <sprite>sprites\spr_thunder</sprite>
+        <sprite>sprites\spr_updatedRain</sprite>
       </sprites>
       <sprites name="Bombs">
         <sprites name="Other Bombs">
